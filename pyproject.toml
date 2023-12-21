@@ -1,0 +1,15 @@
+[project]
+name = "qas"
+version = "0.1.0"
+description = "A question-answering system"
+authors = []
+dependencies = [
+    "llama-index>=0.9.16.post1",
+    "setuptools>=69.0.2",
+]
+requires-python = "==3.11.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+[tool.pdm]
+package-type = "application"
