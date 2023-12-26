@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:0103bab0e8fcd29e5ea45178b960842a28c74d1d52bf74bc8c0704256ff248f3"
+content_hash = "sha256:4d6e506ad5221d14343f58bd567bb044d7c7d0bcd25320256516af1838eb4df7"
 
 [[package]]
 name = "aiohttp"
@@ -364,6 +364,25 @@ files = [
 ]
 
 [[package]]
+name = "fastembed"
+version = "0.1.3"
+requires_python = ">=3.8.0,<3.12"
+summary = "Fast, light, accurate library built for retrieval embedding generation"
+groups = ["default"]
+dependencies = [
+    "huggingface-hub==0.19.4",
+    "onnx<2.0,>=1.11",
+    "onnxruntime<2.0,>=1.15",
+    "requests<3.0,>=2.31",
+    "tokenizers<0.16.0,>=0.15.0",
+    "tqdm<5.0,>=4.65",
+]
+files = [
+    {file = "fastembed-0.1.3-py3-none-any.whl", hash = "sha256:98b6c6d9effec8c96d97048e59cdd53627b16a70fcdbfa7c663772de66e11b3a"},
+    {file = "fastembed-0.1.3.tar.gz", hash = "sha256:c17dc83a02938f8baae6717f18d24ed0ff0c5397b5329cbb5c7264239411346f"},
+]
+
+[[package]]
 name = "filelock"
 version = "3.13.1"
 requires_python = ">=3.8"
@@ -552,7 +571,7 @@ files = [
 
 [[package]]
 name = "huggingface-hub"
-version = "0.20.1"
+version = "0.19.4"
 requires_python = ">=3.8.0"
 summary = "Client library to download and publish models, datasets and other repos on the huggingface.co hub"
 groups = ["default"]
@@ -566,8 +585,8 @@ dependencies = [
     "typing-extensions>=3.7.4.3",
 ]
 files = [
-    {file = "huggingface_hub-0.20.1-py3-none-any.whl", hash = "sha256:ecfdea395a8bc68cd160106c5bd857f7e010768d95f9e1862a779010cc304831"},
-    {file = "huggingface_hub-0.20.1.tar.gz", hash = "sha256:8c88c4c3c8853e22f2dfb4d84c3d493f4e1af52fb3856a90e1eeddcf191ddbb1"},
+    {file = "huggingface_hub-0.19.4-py3-none-any.whl", hash = "sha256:dba013f779da16f14b606492828f3760600a1e1801432d09fe1c33e50b825bb5"},
+    {file = "huggingface_hub-0.19.4.tar.gz", hash = "sha256:176a4fc355a851c17550e7619488f383189727eab209534d7cef2114dae77b22"},
 ]
 
 [[package]]
@@ -656,7 +675,7 @@ files = [
 
 [[package]]
 name = "llama-index"
-version = "0.9.16.post1"
+version = "0.9.21"
 requires_python = ">=3.8.1,<4.0"
 summary = "Interface between LLMs and your data"
 groups = ["default"]
@@ -676,13 +695,12 @@ dependencies = [
     "requests>=2.31.0",
     "tenacity<9.0.0,>=8.2.0",
     "tiktoken>=0.3.3",
-    "types-protobuf<5.0.0.0,>=4.24.0.4",
     "typing-extensions>=4.5.0",
     "typing-inspect>=0.8.0",
 ]
 files = [
-    {file = "llama_index-0.9.16.post1-py3-none-any.whl", hash = "sha256:f787e982c15e6e2ced46b387afe7daf97419e049270b489cd0ab100ef5e9b51e"},
-    {file = "llama_index-0.9.16.post1.tar.gz", hash = "sha256:72284f64a140caa8811439b896dc251dc7f4ecd1bd7cb0e5666ce8a07b7f0d09"},
+    {file = "llama_index-0.9.21-py3-none-any.whl", hash = "sha256:47ed058335d884a8df962ed5e6fb5e9dd2026cea5ae8bdec38018c5bb16a75f5"},
+    {file = "llama_index-0.9.21.tar.gz", hash = "sha256:1f35daac7a03db6e3c1131f701dd2c49747a6532a4c6fcbb517440d23644b228"},
 ]
 
 [[package]]
@@ -838,6 +856,26 @@ groups = ["default"]
 files = [
     {file = "oauthlib-3.2.2-py3-none-any.whl", hash = "sha256:8139f29aac13e25d502680e9e19963e83f16838d48a0d71c287fe40e7067fbca"},
     {file = "oauthlib-3.2.2.tar.gz", hash = "sha256:9859c40929662bec5d64f34d01c99e093149682a3f38915dc0655d5a633dd918"},
+]
+
+[[package]]
+name = "onnx"
+version = "1.15.0"
+requires_python = ">=3.8"
+summary = "Open Neural Network Exchange"
+groups = ["default"]
+dependencies = [
+    "numpy",
+    "protobuf>=3.20.2",
+]
+files = [
+    {file = "onnx-1.15.0-cp311-cp311-macosx_10_12_universal2.whl", hash = "sha256:233ffdb5ca8cc2d960b10965a763910c0830b64b450376da59207f454701f343"},
+    {file = "onnx-1.15.0-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:51fa79c9ea9af033638ec51f9177b8e76c55fad65bb83ea96ee88fafade18ee7"},
+    {file = "onnx-1.15.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f277d4861729f5253a51fa41ce91bfec1c4574ee41b5637056b43500917295ce"},
+    {file = "onnx-1.15.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d8a7c94d2ebead8f739fdb70d1ce5a71726f4e17b3e5b8ad64455ea1b2801a85"},
+    {file = "onnx-1.15.0-cp311-cp311-win32.whl", hash = "sha256:17dcfb86a8c6bdc3971443c29b023dd9c90ff1d15d8baecee0747a6b7f74e650"},
+    {file = "onnx-1.15.0-cp311-cp311-win_amd64.whl", hash = "sha256:60a3e28747e305cd2e766e6a53a0a6d952cf9e72005ec6023ce5e07666676a4e"},
+    {file = "onnx-1.15.0.tar.gz", hash = "sha256:b18461a7d38f286618ca2a6e78062a2a9c634ce498e631e708a8041b00094825"},
 ]
 
 [[package]]
@@ -1373,13 +1411,13 @@ files = [
 
 [[package]]
 name = "setuptools"
-version = "69.0.2"
+version = "69.0.3"
 requires_python = ">=3.8"
 summary = "Easily download, build, install, upgrade, and uninstall Python packages"
 groups = ["default"]
 files = [
-    {file = "setuptools-69.0.2-py3-none-any.whl", hash = "sha256:1e8fdff6797d3865f37397be788a4e3cba233608e9b509382a2777d25ebde7f2"},
-    {file = "setuptools-69.0.2.tar.gz", hash = "sha256:735896e78a4742605974de002ac60562d286fa8051a7e2299445e8e8fbb01aa6"},
+    {file = "setuptools-69.0.3-py3-none-any.whl", hash = "sha256:385eb4edd9c9d5c17540511303e39a147ce2fc04bc55289c322b9e5904fe2c05"},
+    {file = "setuptools-69.0.3.tar.gz", hash = "sha256:be1af57fc409f93647f2e8e4573a142ed38724b8cdd389706a867bb4efcf1e78"},
 ]
 
 [[package]]
@@ -1601,17 +1639,6 @@ dependencies = [
 files = [
     {file = "typer-0.9.0-py3-none-any.whl", hash = "sha256:5d96d986a21493606a358cae4461bd8cdf83cbf33a5aa950ae629ca3b51467ee"},
     {file = "typer-0.9.0.tar.gz", hash = "sha256:50922fd79aea2f4751a8e0408ff10d2662bd0c8bbfa84755a699f3bada2978b2"},
-]
-
-[[package]]
-name = "types-protobuf"
-version = "4.24.0.4"
-requires_python = ">=3.7"
-summary = "Typing stubs for protobuf"
-groups = ["default"]
-files = [
-    {file = "types-protobuf-4.24.0.4.tar.gz", hash = "sha256:57ab42cb171dfdba2c74bb5b50c250478538cc3c5ed95b8b368929ad0c9f90a5"},
-    {file = "types_protobuf-4.24.0.4-py3-none-any.whl", hash = "sha256:131ab7d0cbc9e444bc89c994141327dcce7bcaeded72b1acb72a94827eb9c7af"},
 ]
 
 [[package]]
