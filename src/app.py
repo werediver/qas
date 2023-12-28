@@ -61,6 +61,7 @@ def main():
 
   query_engine = QueryEngine(
     query_embed_template="Represent this sentence for searching relevant passages: {query}",
+    user_msg_template="[INST]{msg}[/INST]",
     context_entry_template="From document \"{source}\":\n\n{content}",
     augmented_query_template=PromptTemplate(
       "Below are pieces of the context information followed by the text \"End of context.\"\n\n"
@@ -75,7 +76,7 @@ def main():
 
   print("Query: ", end="", flush=True)
   for q in sys.stdin:
-    response = query_engine.query(q)
+    response = query_engine.query(q.strip())
     print(f"Response: {response}")
     print("Query: ", end="", flush=True)
 
