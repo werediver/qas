@@ -2,10 +2,10 @@
 # It is not intended for manual editing.
 
 [metadata]
-groups = ["default"]
+groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:4d6e506ad5221d14343f58bd567bb044d7c7d0bcd25320256516af1838eb4df7"
+content_hash = "sha256:ddca18f62f73c43df1d974359f628d09b2ec0c59d9f3cbc0b604a8219ecdba3a"
 
 [[package]]
 name = "aiohttp"
@@ -675,7 +675,7 @@ files = [
 
 [[package]]
 name = "llama-index"
-version = "0.9.21"
+version = "0.9.22"
 requires_python = ">=3.8.1,<4.0"
 summary = "Interface between LLMs and your data"
 groups = ["default"]
@@ -699,8 +699,8 @@ dependencies = [
     "typing-inspect>=0.8.0",
 ]
 files = [
-    {file = "llama_index-0.9.21-py3-none-any.whl", hash = "sha256:47ed058335d884a8df962ed5e6fb5e9dd2026cea5ae8bdec38018c5bb16a75f5"},
-    {file = "llama_index-0.9.21.tar.gz", hash = "sha256:1f35daac7a03db6e3c1131f701dd2c49747a6532a4c6fcbb517440d23644b228"},
+    {file = "llama_index-0.9.22-py3-none-any.whl", hash = "sha256:8731b2137decfae9f56a2837f3791d8e4ce434a9ec9d6d74d6dafb2d736f05f7"},
+    {file = "llama_index-0.9.22.tar.gz", hash = "sha256:7eecb62106398f9c5b1c04e79fee82a1004c26387055335c23a8f33833c8afff"},
 ]
 
 [[package]]
@@ -788,11 +788,31 @@ files = [
 ]
 
 [[package]]
+name = "mypy"
+version = "1.8.0"
+requires_python = ">=3.8"
+summary = "Optional static typing for Python"
+groups = ["dev"]
+dependencies = [
+    "mypy-extensions>=1.0.0",
+    "typing-extensions>=4.1.0",
+]
+files = [
+    {file = "mypy-1.8.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:855fe27b80375e5c5878492f0729540db47b186509c98dae341254c8f45f42ae"},
+    {file = "mypy-1.8.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:4c886c6cce2d070bd7df4ec4a05a13ee20c0aa60cb587e8d1265b6c03cf91da3"},
+    {file = "mypy-1.8.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d19c413b3c07cbecf1f991e2221746b0d2a9410b59cb3f4fb9557f0365a1a817"},
+    {file = "mypy-1.8.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:9261ed810972061388918c83c3f5cd46079d875026ba97380f3e3978a72f503d"},
+    {file = "mypy-1.8.0-cp311-cp311-win_amd64.whl", hash = "sha256:51720c776d148bad2372ca21ca29256ed483aa9a4cdefefcef49006dff2a6835"},
+    {file = "mypy-1.8.0-py3-none-any.whl", hash = "sha256:538fd81bb5e430cc1381a443971c0475582ff9f434c16cd46d2c66763ce85d9d"},
+    {file = "mypy-1.8.0.tar.gz", hash = "sha256:6ff8b244d7085a0b425b56d327b480c3b29cafbd2eff27316a004f9a7391ae07"},
+]
+
+[[package]]
 name = "mypy-extensions"
 version = "1.0.0"
 requires_python = ">=3.5"
 summary = "Type system extensions for programs checked with the mypy type checker."
-groups = ["default"]
+groups = ["default", "dev"]
 files = [
     {file = "mypy_extensions-1.0.0-py3-none-any.whl", hash = "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d"},
     {file = "mypy_extensions-1.0.0.tar.gz", hash = "sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782"},
@@ -1646,7 +1666,7 @@ name = "typing-extensions"
 version = "4.9.0"
 requires_python = ">=3.8"
 summary = "Backported and Experimental Type Hints for Python 3.8+"
-groups = ["default"]
+groups = ["default", "dev"]
 files = [
     {file = "typing_extensions-4.9.0-py3-none-any.whl", hash = "sha256:af72aea155e91adfc61c3ae9e0e342dbc0cba726d6cba4b6c72c1f34e47291cd"},
     {file = "typing_extensions-4.9.0.tar.gz", hash = "sha256:23478f88c37f27d76ac8aee6c905017a143b0b1b886c3c9f66bc2fd94f9f5783"},
