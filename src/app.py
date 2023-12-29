@@ -44,7 +44,6 @@ def main():
         chunk_size=512, 
         chunk_overlap=96,
         paragraph_separator="\n\n",
-        include_metadata=False
       )
       nodes = node_parser.get_nodes_from_documents(documents)
   else:
