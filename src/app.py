@@ -1,6 +1,5 @@
 import os
 import sys
-import time
 
 from llama_index.embeddings import FastEmbedEmbedding
 from llama_index.indices import VectorStoreIndex
@@ -13,12 +12,12 @@ from llama_index.storage.storage_context import StorageContext
 from llama_index.vector_stores import ChromaVectorStore
 
 import chromadb
+from qas.messages_to_prompt import make_mistral_messages_to_prompt_converter
 
 from qas.query_engine import QueryEngine
 from qas.utils import Mark
 
 def main():
-  # TODO: If only one model is available via the API, detect and select it automatically.
   model_id = "mistral"
   service_ctx = ServiceContext.from_defaults(
     llm=Ollama(model=model_id),
@@ -61,7 +60,6 @@ def main():
 
   query_engine = QueryEngine(
     query_embed_template="Represent this sentence for searching relevant passages: {query}",
-    user_msg_template="[INST]{msg}[/INST]",
     context_entry_template="From document \"{source}\":\n\n{content}",
     augmented_query_template=PromptTemplate(
       "Below are pieces of the context information followed by the text \"End of context.\"\n\n"
@@ -70,6 +68,7 @@ def main():
       "Given the context information and not prior knowledge, answer the following query:\n\n"
       "{query}\n"
     ),
+    messages_to_prompt=make_mistral_messages_to_prompt_converter(),
     retriever=vector_index.as_retriever(similarity_top_k=5),
     llm=service_ctx.llm, 
   )
