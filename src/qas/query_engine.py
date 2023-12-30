@@ -37,6 +37,13 @@ class QueryEngine(CustomQueryEngine):
 
   messages_to_prompt: MessagesToPromptType = Field(exclude=True)
 
+  similarity_cutoff: float | None
+  """
+  In case the retriever doesn't support `similarity_cutoff`, it can be supplied to the query engine.
+
+  The retrieved nodes with the similarity score below `similarity_cutoff` will be ignored.
+  """
+
   retriever: BaseRetriever
   llm: LLM
 
@@ -45,6 +52,12 @@ class QueryEngine(CustomQueryEngine):
   @override
   def custom_query(self, query: str):
       nodes = self.retriever.retrieve(self.query_embed_template.format(query=query))
+
+      # scores = [n.score for n in nodes]
+      # print(f"Context node scores: {scores}");
+      if self.similarity_cutoff is not None:
+         nodes = [node for node in nodes if node.score >= self.similarity_cutoff]
+
       context = "\n\n".join([self.format_context_node(n.node) for n in nodes])
       augmented_query = self.augmented_query_template.format(context=context, query=query)
       # print(f"Augmented query: {augmented_query}") # Debug
