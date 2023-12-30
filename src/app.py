@@ -68,7 +68,8 @@ def main():
       "{query}\n"
     ),
     messages_to_prompt=make_mistral_messages_to_prompt_converter(),
-    retriever=vector_index.as_retriever(similarity_top_k=5),
+    # similarity_cutoff=0.7,
+    retriever=vector_index.as_retriever(similarity_top_k=3),
     llm=service_ctx.llm, 
   )
 
