@@ -1,29 +1,33 @@
-import os
 import sys
+from typing import Any, List
 
 from llama_index.embeddings import FastEmbedEmbedding
 from llama_index.indices import VectorStoreIndex
 from llama_index.llms import Ollama
-from llama_index.node_parser import SimpleNodeParser
+from llama_index.node_parser import SentenceWindowNodeParser
 from llama_index.prompts import PromptTemplate
-from llama_index.readers import SimpleDirectoryReader
-from llama_index.service_context import ServiceContext, set_global_service_context
+from llama_index.schema import BaseNode
+from llama_index.service_context import ServiceContext
 from llama_index.storage.storage_context import StorageContext
 from llama_index.vector_stores import ChromaVectorStore
 
 import chromadb
-from qas.messages_to_prompt import make_mistral_messages_to_prompt_converter
 
+from qas.ingestion.text_clean_up import TextCleanUp
+from qas.messages_to_prompt import make_mistral_messages_to_prompt_converter
 from qas.query_engine import QueryEngine
-from qas.utils import Mark
+import config
 
 def main():
   model_id = "mistral"
+  node_parser=SentenceWindowNodeParser.from_defaults()
+  embed_model=FastEmbedEmbedding(model_name="BAAI/bge-small-en-v1.5", max_length=512)
   service_ctx = ServiceContext.from_defaults(
     llm=Ollama(model=model_id),
-    embed_model=FastEmbedEmbedding(model_name="BAAI/bge-small-en-v1.5", max_length=512)
+    embed_model=embed_model,
+    node_parser=node_parser,
+    transformations=[TextCleanUp(), node_parser, log_node_count],
   )
-  # set_global_service_context(service_ctx)
 
   chroma_client = chromadb.PersistentClient()
   chroma_collection = chroma_client.get_or_create_collection(
@@ -35,30 +39,20 @@ def main():
   storage_ctx = StorageContext.from_defaults(vector_store=vector_store)
 
   if chroma_collection.count() == 0:
-    with Mark("Scanning documents... "):
-      docs_path = os.getenv("DOCS")
-      assert docs_path is not None, "Environment variable DOCS must point to a directory with documents to index"
-      documents = SimpleDirectoryReader(docs_path, required_exts=[".md"]).load_data()
-
-      node_parser = SimpleNodeParser.from_defaults(
-        chunk_size=512, 
-        chunk_overlap=96,
-        paragraph_separator="\n\n",
-      )
-      nodes = node_parser.get_nodes_from_documents(documents)
+    documents = config.load_data()
+    print(f"Document count: {len(documents)}")
   else:
-     nodes = []
+     documents = []
 
-  # `VectorStoreIndex` requires an embedding model in `service_context`.
-  vector_index = VectorStoreIndex(
-    nodes, 
+  vector_index = VectorStoreIndex.from_documents(
+    documents, 
     service_context=service_ctx, 
     storage_context=storage_ctx,
     show_progress=True,
   )
 
   query_engine = QueryEngine(
-    query_embed_template="Represent this sentence for searching relevant passages: {query}",
+    query_embed_template="Represent the following sentence for searching relevant passages: {query}",
     context_entry_template="From document \"{source}\":\n\n{content}",
     augmented_query_template=PromptTemplate(
       "Below are pieces of the context information followed by the text \"End of context.\"\n\n"
@@ -69,7 +63,7 @@ def main():
     ),
     messages_to_prompt=make_mistral_messages_to_prompt_converter(),
     # similarity_cutoff=0.7,
-    retriever=vector_index.as_retriever(similarity_top_k=3),
+    retriever=vector_index.as_retriever(similarity_top_k=10),
     llm=service_ctx.llm, 
   )
 
@@ -78,6 +72,11 @@ def main():
     response = query_engine.query(q.strip())
     print(f"Response: {response}")
     print("Query: ", end="", flush=True)
+
+def log_node_count(nodes: List[BaseNode], **kwargs: Any) -> List[BaseNode]:
+  del kwargs
+  print(f"Node count: {len(nodes)}")
+  return nodes
 
 if __name__ == "__main__":
   main()
