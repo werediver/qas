@@ -1,5 +1,5 @@
 import sys
-from typing import Any, List
+from typing import Any, Callable, List
 
 from llama_index.embeddings import FastEmbedEmbedding
 from llama_index.indices import VectorStoreIndex
@@ -12,6 +12,7 @@ from llama_index.storage.storage_context import StorageContext
 from llama_index.vector_stores import ChromaVectorStore
 
 import chromadb
+from qas.ingestion.node_dedup import NodeDedup
 
 from qas.ingestion.text_clean_up import TextCleanUp
 from qas.messages_to_prompt import make_mistral_messages_to_prompt_converter
@@ -26,7 +27,13 @@ def main():
     llm=Ollama(model=model_id),
     embed_model=embed_model,
     node_parser=node_parser,
-    transformations=[TextCleanUp(), node_parser, log_node_count],
+    transformations=[
+      TextCleanUp(),
+      node_parser,
+      log_node_count("Node count: {count}"),
+      NodeDedup(),
+      log_node_count("Node count after deduplication: {count}"),
+    ],
   )
 
   chroma_client = chromadb.PersistentClient()
@@ -73,10 +80,13 @@ def main():
     print(f"Response: {response}")
     print("Query: ", end="", flush=True)
 
-def log_node_count(nodes: List[BaseNode], **kwargs: Any) -> List[BaseNode]:
-  del kwargs
-  print(f"Node count: {len(nodes)}")
-  return nodes
+def log_node_count(msg: str = "Node count: {count}") -> Callable[[List[BaseNode]], List[BaseNode]]:
+  def _log_node_count(nodes: List[BaseNode], **kwargs: Any) -> List[BaseNode]:
+    del kwargs
+    print(msg.format(count=len(nodes)))
+    return nodes
+  
+  return _log_node_count
 
 if __name__ == "__main__":
   main()

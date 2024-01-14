@@ -2,15 +2,15 @@ from typing import List
 from typing_extensions import override
 import os
 
+from llama_index.llms import ChatMessage, MessageRole
 from llama_index.llms import LLM
 from llama_index.llms.llm import MessagesToPromptType
 from llama_index.prompts import PromptTemplate
 from llama_index.query_engine.custom import CustomQueryEngine, STR_OR_RESPONSE_TYPE
 from llama_index.retrievers import BaseRetriever
 from llama_index.schema import BaseNode
-
-from llama_index.llms import ChatMessage, MessageRole
 from pydantic import Field
+import llama_index.node_parser.text.sentence_window as sentence_window
 
 class QueryEngine(CustomQueryEngine):
   """
@@ -61,7 +61,6 @@ class QueryEngine(CustomQueryEngine):
       )
 
       response = str(self.llm.complete(prompt)).strip()
-      print(f"Intermediate response: {response}") # Debug
 
       # An attempt at refining the response
 
@@ -94,7 +93,7 @@ class QueryEngine(CustomQueryEngine):
 
     return self.context_entry_template.format(
       source=title,
-      content=node.get_content()
+      content= node.metadata.get(sentence_window.DEFAULT_WINDOW_METADATA_KEY) or node.get_content()
     )
 
   def file_name_without_ext(self, path: str | None) -> str | None:
