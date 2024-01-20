@@ -12,10 +12,11 @@ class TextCleanUp(TransformComponent):
   _excessive_empty_lines = re.compile(r"([^\S\n]*\n){2,}")
   _rouge_line_break = re.compile(r"(?<=[\w ])\n(?=[\w])")
   _trailing_whitespace = re.compile(r"\s+$")
+  _word = re.compile(r"\w+")
 
   def __call__(self, nodes: List["BaseNode"], **kwargs: Any) -> List["BaseNode"]:
       del kwargs
-      return [self.check_node(node) for node in nodes]
+      return [self.check_node(node) for node in nodes if self.is_not_tiny(node)]
 
   def check_node(self, node: BaseNode):
     if isinstance(node, TextNode):
@@ -24,6 +25,11 @@ class TextCleanUp(TransformComponent):
 
       node.text = self.clean_up_text(node.text)
     return node
+
+  def is_not_tiny(self, node: BaseNode):
+    if isinstance(node, TextNode):
+      return len(self._word.findall(node.text)) > 3
+    return True
 
   def clean_up_text(self, s: str):
     s = self._leading_empty_lines.sub("", s)

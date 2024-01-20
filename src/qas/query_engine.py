@@ -5,6 +5,7 @@ import os
 from llama_index.llms import ChatMessage, MessageRole
 from llama_index.llms import LLM
 from llama_index.llms.llm import MessagesToPromptType
+from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.prompts import PromptTemplate
 from llama_index.query_engine.custom import CustomQueryEngine, STR_OR_RESPONSE_TYPE
 from llama_index.retrievers import BaseRetriever
@@ -12,6 +13,7 @@ from llama_index.schema import BaseNode
 from pydantic import Field
 import llama_index.node_parser.text.sentence_window as sentence_window
 
+# TODO: Consider splitting into multiple component and chaining them together in a `QueryPipeline`.
 class QueryEngine(CustomQueryEngine):
   """
   A retrieval-augmented query engine.
@@ -28,11 +30,21 @@ class QueryEngine(CustomQueryEngine):
   - `content`: the relevant source fragment
   """
 
-  augmented_query_template: PromptTemplate
+  augmented_query_template1: PromptTemplate
   """
   Template parameters:
 
   - `context`: the combined context entries
+  - `query`: the original query
+  """
+
+  # TODO: Consider supporting multiple refinement iterations.
+  augmented_query_template2: PromptTemplate
+  """
+  A refinement template. Parameters:
+
+  - `context`: the combined context entries
+  - `response`: the initial response
   - `query`: the original query
   """
 
@@ -47,6 +59,7 @@ class QueryEngine(CustomQueryEngine):
   """
 
   retriever: BaseRetriever
+  reranker: BaseNodePostprocessor | None
   llm: LLM
 
   messages: List[ChatMessage] = []
@@ -54,7 +67,19 @@ class QueryEngine(CustomQueryEngine):
   @override
   def custom_query(self, query: str) -> STR_OR_RESPONSE_TYPE:
       context = self.retrieve_context(query)
-      augmented_query = self.augmented_query_template.format(context=context, query=query)
+      augmented_query = self.augmented_query_template1.format(context=context, query=query)
+
+      prompt = self.messages_to_prompt(
+          self.messages + [ChatMessage(role=MessageRole.USER, content=augmented_query)]
+      )
+
+      response = str(self.llm.complete(prompt)).strip()
+      print(f"🟠 Initial response: {response}") # Debug
+
+      # Refining the response
+
+      # context = self.retrieve_context(response)
+      augmented_query = self.augmented_query_template2.format(context=context, response=response, query=query)
 
       prompt = self.messages_to_prompt(
           self.messages + [ChatMessage(role=MessageRole.USER, content=augmented_query)]
@@ -62,20 +87,11 @@ class QueryEngine(CustomQueryEngine):
 
       response = str(self.llm.complete(prompt)).strip()
 
-      # An attempt at refining the response
-
-      context = self.retrieve_context(response)
-      context += f"\n\nAn opinion of another expert:\n\n{response}"
-      augmented_query = self.augmented_query_template.format(context=context, query=query)
-
-      prompt = self.messages_to_prompt(
-          self.messages + [ChatMessage(role=MessageRole.USER, content=augmented_query)]
-      )
-
-      response = str(self.llm.complete(prompt)).strip()
-
-      self.messages.append(ChatMessage(role=MessageRole.USER, content=query))
-      self.messages.append(ChatMessage(role=MessageRole.ASSISTANT, content=response))
+      # There is no big point in maintaining the chat history, because
+      # supporting queries-in-context (e.g. "How bit is _that_ team?")
+      # requires more sophisticated machinery.
+      # self.messages.append(ChatMessage(role=MessageRole.USER, content=query))
+      # self.messages.append(ChatMessage(role=MessageRole.ASSISTANT, content=response))
 
       return response
 
@@ -83,7 +99,14 @@ class QueryEngine(CustomQueryEngine):
     nodes = self.retriever.retrieve(self.query_embed_template.format(query=query))
 
     if self.similarity_cutoff is not None:
+        # TODO: Handle the situation when all or too many nodes are cut off.
         nodes = [node for node in nodes if node.score is not None and node.score >= self.similarity_cutoff]
+
+    if self.reranker:
+      nodes = self.reranker.postprocess_nodes(nodes=nodes, query_str=query)
+
+    # Put the most relevant entries in the end (of the prompt), where they may have more impact on the generation.
+    nodes.reverse()
 
     return "\n\n".join([self.format_context_node(n.node) for n in nodes])
 

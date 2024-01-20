@@ -11,6 +11,7 @@ dependencies = [
     "typing-extensions>=4.9.0",
     "llama-hub>=0.0.65",
     "atlassian-python-api>=3.41.4",
+    "sentence-transformers>=2.2.2",
 ]
 requires-python = "==3.11.*"
 readme = "README.md"
