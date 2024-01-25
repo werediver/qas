@@ -40,7 +40,6 @@ def main():
   chroma_client = chromadb.PersistentClient()
   chroma_collection = chroma_client.get_or_create_collection(
     "context", 
-    metadata={"hnsw:space": "ip"} # Use the dot-product as the distance function
   )
   vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 
@@ -60,16 +59,15 @@ def main():
   )
 
   query_engine = QueryEngine(
-    query_embed_template="Represent the following sentence for searching relevant passages: {query}",
+    query_transform=ExpandQueryTransform(llm=service_ctx.llm),
     context_entry_template="From document \"{source}\":\n\n{content}",
     augmented_query_template1=PromptTemplate(
       "Below are pieces of the context information followed by the text \"End of context.\"\n\n"
       "{context}\n\n"
       "End of context.\n\n"
 
-      # A Tree of Thought prompt inducing some diversity between expert answers by suggesting they have different mindset.
-      # Often makes the experts take certain roles, e.g. a developer, a tester, etc.
-      "Three experts with different mindsets are reading the context and answering the following query by writing down one step of their independent thinking and sharing it with the group.\n\n"
+      # A Tree of Thought-like prompt.
+      "Three experts with different mindsets who rarely agree with each other are reading the context and answering the following request by writing down one step of their independent thinking and sharing it with the group in turns, until they reach a conclusion.\n\n"
       
       "{query}\n"
     ),
@@ -77,13 +75,12 @@ def main():
       "Below are pieces of the context information followed by the text \"End of context.\"\n\n"
       "{context}\n\n"
       "End of context.\n\n"
-      "The opinions of other experts:\n\n"
+      "The opinions of other experts to consider critically:\n\n"
       "{response}\n\n"
       "Given the context information and not prior knowledge, answer the following query concise and to the point:\n\n"
       "{query}\n"
     ),
     messages_to_prompt=make_mistral_messages_to_prompt_converter(),
-    # similarity_cutoff=0.7,
     retriever=vector_index.as_retriever(similarity_top_k=128),
     # Find suitable model list at https://www.sbert.net/docs/pretrained-models/ce-msmarco.html
     reranker=SentenceTransformerRerank(top_n=10, model="cross-encoder/ms-marco-MiniLM-L-12-v2"),
