@@ -25,7 +25,7 @@ def main():
   node_parser=SentenceWindowNodeParser.from_defaults()
   embed_model=FastEmbedEmbedding(model_name="BAAI/bge-small-en-v1.5", max_length=512)
   service_ctx = ServiceContext.from_defaults(
-    llm=Ollama(model=model_id),
+    llm=Ollama(model=model_id, request_timeout=60.0),
     node_parser=node_parser,
     embed_model=embed_model,
     transformations=[
