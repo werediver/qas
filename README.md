@@ -33,3 +33,20 @@ Finally, to run the app execute the following command:
 ```
 env DOCS="path/to/txt/or/md/docs" pdm run src/app.py
 ```
+
+## How to load Confluence pages
+
+`confluence_md` package can be used as a CLI tool to download Confluence pages as Markdown files with metadata in stored YAML front matter.
+
+Make sure to set the following environment variables put them in `.env` file in the project root:
+
+- `URL`, Confluence server URL
+- `CLIENT_ID`, Confluence user name
+- `ACCESS_TOKEN`, personal access token
+- `DUMP_DIR`, directory to write Markdown files to
+
+To start downloading, execute the following command:
+
+```
+date; time pdm run python -m src.confluence_md
+```
