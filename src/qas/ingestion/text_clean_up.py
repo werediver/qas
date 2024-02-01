@@ -14,7 +14,7 @@ class TextCleanUp(TransformComponent):
   _trailing_whitespace = re.compile(r"\s+$")
   _word = re.compile(r"\w+")
 
-  def __call__(self, nodes: List["BaseNode"], **kwargs: Any) -> List["BaseNode"]:
+  def __call__(self, nodes: List[BaseNode], **kwargs: Any) -> List[BaseNode]:
       del kwargs
       return [self.check_node(node) for node in nodes if self.is_not_tiny(node)]
 

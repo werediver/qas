@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:dba7e772044a176cadd34c0c4c1b77d06dd5da9ca7cedde6b297ffcda620dd03"
+content_hash = "sha256:2ee55faa8acb1e856b284f47e952c3cbe01a8daff94842386be4f9d97abbba64"
 
 [[package]]
 name = "aiohttp"
@@ -92,10 +92,11 @@ files = [
 
 [[package]]
 name = "atlassian-python-api"
-version = "3.41.5"
+version = "3.41.9"
 summary = "Python Atlassian REST API Wrapper"
 groups = ["default"]
 dependencies = [
+    "beautifulsoup4",
     "deprecated",
     "jmespath",
     "oauthlib",
@@ -104,8 +105,8 @@ dependencies = [
     "six",
 ]
 files = [
-    {file = "atlassian-python-api-3.41.5.tar.gz", hash = "sha256:52efdd95f1a9ae76ecebb3efcc6ad8e73bc1f29280677b0ad54815451d698df8"},
-    {file = "atlassian_python_api-3.41.5-py3-none-any.whl", hash = "sha256:32184e6168f4b6e95c62bf323f22998f93cd48b6eb72968e899daa9eec25f753"},
+    {file = "atlassian-python-api-3.41.9.tar.gz", hash = "sha256:3682b9539c1e31fe53b020bdcbce532ca5655fc2cc98cc0e7f9572d92afcc13b"},
+    {file = "atlassian_python_api-3.41.9-py3-none-any.whl", hash = "sha256:818294e2a89222dbda2fae03332317b2a770858e62fae4b62e6b579e0b31109b"},
 ]
 
 [[package]]
@@ -368,6 +369,16 @@ dependencies = [
 files = [
     {file = "Deprecated-1.2.14-py2.py3-none-any.whl", hash = "sha256:6fac8b097794a90302bdbb17b9b815e732d3c4720583ff1b198499d78470466c"},
     {file = "Deprecated-1.2.14.tar.gz", hash = "sha256:e5323eb936458dccc2582dc6f9c322c852a775a27065ff2b0c4970b9d53d01b3"},
+]
+
+[[package]]
+name = "dirtyjson"
+version = "1.0.8"
+summary = "JSON decoder for Python that can extract data from the muck"
+groups = ["default"]
+files = [
+    {file = "dirtyjson-1.0.8-py3-none-any.whl", hash = "sha256:125e27248435a58acace26d5c2c4c11a1c0de0a9c5124c5a94ba78e517d74f53"},
+    {file = "dirtyjson-1.0.8.tar.gz", hash = "sha256:90ca4a18f3ff30ce849d100dcf4a003953c79d3a2348ef056f1d9c22231a25fd"},
 ]
 
 [[package]]
@@ -746,34 +757,34 @@ files = [
 
 [[package]]
 name = "llama-hub"
-version = "0.0.72"
+version = "0.0.77"
 requires_python = ">=3.8.1,<3.12"
 summary = "A library of community-driven data loaders for LLMs. Use with LlamaIndex and/or LangChain. "
 groups = ["default"]
 dependencies = [
     "html2text",
-    "llama-index>=0.9.29",
+    "llama-index>=0.9.39",
     "psutil",
     "pyaml<24.0.0,>=23.9.7",
     "retrying",
 ]
 files = [
-    {file = "llama_hub-0.0.72-py3-none-any.whl", hash = "sha256:c03297eedae44def23fa88cd680113bde7249d8394b9cb9b29eb6cc196663c05"},
-    {file = "llama_hub-0.0.72.tar.gz", hash = "sha256:14c9371bd30d8eede1944f1cc6afb7377fca9d40c262a0e9798e9ed2ab122297"},
+    {file = "llama_hub-0.0.77-py3-none-any.whl", hash = "sha256:4d4583d86a58739697062791acec4ccff2a24a1b74f44279259eaeb8e1a243df"},
+    {file = "llama_hub-0.0.77.tar.gz", hash = "sha256:8584a50da14fe2dc14982704f482d278091187b7754127d2ca19ffb193892bf3"},
 ]
 
 [[package]]
 name = "llama-index"
-version = "0.9.31"
+version = "0.9.40"
 requires_python = ">=3.8.1,<4.0"
 summary = "Interface between LLMs and your data"
 groups = ["default"]
 dependencies = [
     "SQLAlchemy[asyncio]>=1.4.49",
     "aiohttp<4.0.0,>=3.8.6",
-    "beautifulsoup4<5.0.0,>=4.12.2",
     "dataclasses-json",
     "deprecated>=1.2.9.3",
+    "dirtyjson<2.0.0,>=1.0.8",
     "fsspec>=2023.5.0",
     "httpx",
     "nest-asyncio<2.0.0,>=1.5.8",
@@ -789,8 +800,8 @@ dependencies = [
     "typing-inspect>=0.8.0",
 ]
 files = [
-    {file = "llama_index-0.9.31-py3-none-any.whl", hash = "sha256:b5a2394ac1463a687df7d37233abfc69924c0441b3984423e6f1653bcb1a3a59"},
-    {file = "llama_index-0.9.31.tar.gz", hash = "sha256:1a3018ab9aa05f7ef217c9dc6d95117cd9146f8211023e866da0b113c5b75b9f"},
+    {file = "llama_index-0.9.40-py3-none-any.whl", hash = "sha256:9fd192c574026b3e5eb95c8aed82506c48b46b5acb3401e98e0864d6f485f7a9"},
+    {file = "llama_index-0.9.40.tar.gz", hash = "sha256:bbe8b9584393a90bfb5246333d63df1c34d0989d19737f76f26baed6080b25dc"},
 ]
 
 [[package]]
@@ -1625,6 +1636,21 @@ files = [
 ]
 
 [[package]]
+name = "pydantic-settings"
+version = "2.1.0"
+requires_python = ">=3.8"
+summary = "Settings management using Pydantic"
+groups = ["default"]
+dependencies = [
+    "pydantic>=2.3.0",
+    "python-dotenv>=0.21.0",
+]
+files = [
+    {file = "pydantic_settings-2.1.0-py3-none-any.whl", hash = "sha256:7621c0cb5d90d1140d2f0ef557bdf03573aac7035948109adf2574770b77605a"},
+    {file = "pydantic_settings-2.1.0.tar.gz", hash = "sha256:26b1492e0a24755626ac5e6d715e9077ab7ad4fb5f19a8b7ed7011d52f36141c"},
+]
+
+[[package]]
 name = "pypika"
 version = "0.48.9"
 summary = "A SQL query builder API for Python"
@@ -1678,6 +1704,19 @@ groups = ["default"]
 files = [
     {file = "python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"},
     {file = "python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"},
+]
+
+[[package]]
+name = "python-frontmatter"
+version = "1.1.0"
+summary = "Parse and manage posts with YAML (or other) frontmatter"
+groups = ["default"]
+dependencies = [
+    "PyYAML",
+]
+files = [
+    {file = "python-frontmatter-1.1.0.tar.gz", hash = "sha256:7118d2bd56af9149625745c58c9b51fb67e8d1294a0c76796dafdc72c36e5f6d"},
+    {file = "python_frontmatter-1.1.0-py3-none-any.whl", hash = "sha256:335465556358d9d0e6c98bbeb69b1c969f2a4a21360587b9873bfc3b213407c1"},
 ]
 
 [[package]]
@@ -1882,24 +1921,25 @@ files = [
 
 [[package]]
 name = "sentence-transformers"
-version = "2.2.2"
-requires_python = ">=3.6.0"
+version = "2.3.1"
+requires_python = ">=3.8.0"
 summary = "Multilingual text embeddings"
 groups = ["default"]
 dependencies = [
-    "huggingface-hub>=0.4.0",
+    "Pillow",
+    "huggingface-hub>=0.15.1",
     "nltk",
     "numpy",
     "scikit-learn",
     "scipy",
     "sentencepiece",
-    "torch>=1.6.0",
-    "torchvision",
+    "torch>=1.11.0",
     "tqdm",
-    "transformers<5.0.0,>=4.6.0",
+    "transformers<5.0.0,>=4.32.0",
 ]
 files = [
-    {file = "sentence-transformers-2.2.2.tar.gz", hash = "sha256:dbc60163b27de21076c9a30d24b5b7b6fa05141d68cf2553fa9a77bf79a29136"},
+    {file = "sentence-transformers-2.3.1.tar.gz", hash = "sha256:d589d85a464f45338cdbdf99ea715f8068e1fb01c582e0bcdbf60bcf3eade6d0"},
+    {file = "sentence_transformers-2.3.1-py3-none-any.whl", hash = "sha256:285d6637726c3b002186aa4b8bcace1101364b32671fb605297c4c2636b8190e"},
 ]
 
 [[package]]
@@ -2165,26 +2205,6 @@ files = [
     {file = "torch-2.1.2-cp311-cp311-win_amd64.whl", hash = "sha256:e0ee6cf90c8970e05760f898d58f9ac65821c37ffe8b04269ec787aa70962b69"},
     {file = "torch-2.1.2-cp311-none-macosx_10_9_x86_64.whl", hash = "sha256:76d37967c31c99548ad2c4d3f2cf191db48476f2e69b35a0937137116da356a1"},
     {file = "torch-2.1.2-cp311-none-macosx_11_0_arm64.whl", hash = "sha256:e2d83f07b4aac983453ea5bf8f9aa9dacf2278a8d31247f5d9037f37befc60e4"},
-]
-
-[[package]]
-name = "torchvision"
-version = "0.16.2"
-requires_python = ">=3.8"
-summary = "image and video datasets and models for torch deep learning"
-groups = ["default"]
-dependencies = [
-    "numpy",
-    "pillow!=8.3.*,>=5.3.0",
-    "requests",
-    "torch==2.1.2",
-]
-files = [
-    {file = "torchvision-0.16.2-cp311-cp311-macosx_10_13_x86_64.whl", hash = "sha256:67b1aaf8b8cb02ce75dd445f291a27c8036a502f8c0aa76e28c37a0faac2e153"},
-    {file = "torchvision-0.16.2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:bef30d03e1d1c629761f4dca51d3b7d8a0dc0acce6f4068ab2a1634e8e7b64e0"},
-    {file = "torchvision-0.16.2-cp311-cp311-manylinux1_x86_64.whl", hash = "sha256:e59cc7b2bd1ab5c0ce4ae382e4e37be8f1c174e8b5de2f6a23c170de9ae28495"},
-    {file = "torchvision-0.16.2-cp311-cp311-manylinux2014_aarch64.whl", hash = "sha256:e130b08cc9b3cc73a6c59d6edf032394a322f9579bfd21d14bc2e1d0999aa758"},
-    {file = "torchvision-0.16.2-cp311-cp311-win_amd64.whl", hash = "sha256:8692ab1e48807e9604046a6f4beeb67b523294cee1b00828654bb0df2cfce2b2"},
 ]
 
 [[package]]

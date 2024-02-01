@@ -12,13 +12,15 @@ dependencies = [
     "llama-hub>=0.0.65",
     "atlassian-python-api>=3.41.4",
     "sentence-transformers>=2.2.2",
+    "pydantic-settings>=2.1.0",
+    "python-frontmatter>=1.1.0",
 ]
 requires-python = "==3.11.*"
 readme = "README.md"
 license = {text = "MIT"}
 
 [tool.pdm]
-package-type = "application"
+distribution = false
 
 [tool.pdm.dev-dependencies]
 dev = [
