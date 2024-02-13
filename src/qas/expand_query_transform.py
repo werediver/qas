@@ -1,4 +1,4 @@
-from typing import Callable, Dict, List
+from typing import Callable, List
 from typing_extensions import override
 
 import re
@@ -43,7 +43,7 @@ class ExpandQueryTransform(BaseQueryTransform):
     super().__init__()
 
   @override
-  def _run(self, query_bundle: QueryBundle, metadata: Dict) -> QueryBundle:
+  def _run(self, query_bundle: QueryBundle, metadata: dict) -> QueryBundle:
     del metadata
     prompt = self._prompt_template.format(query=query_bundle.query_str)
     response = str(self._llm.complete(prompt)).strip()
@@ -52,15 +52,15 @@ class ExpandQueryTransform(BaseQueryTransform):
       query_str=query_bundle.query_str,
       custom_embedding_strs=[query_bundle.query_str] + alt_queries,
     )
-  
+
   @override
-  def _get_prompts(self) -> Dict[str, BasePromptTemplate]:
+  def _get_prompts(self) -> dict[str, BasePromptTemplate]:
     return {
       "expand_prompt_query": self._prompt_template,
     }
 
   @override
-  def _update_prompts(self, prompts_dict: Dict[str, BasePromptTemplate]) -> None:
+  def _update_prompts(self, prompts_dict: dict[str, BasePromptTemplate]) -> None:
       new_prompt_template = prompts_dict.get("expand_prompt_query")
       if new_prompt_template:
         self._prompt_template = new_prompt_template

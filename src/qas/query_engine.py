@@ -76,7 +76,7 @@ class QueryEngine(CustomQueryEngine):
 
     query_bundle2 = QueryBundle(
       query_str=query,
-      custom_embedding_strs=query_bundle1.custom_embedding_strs + split_expert_group_response(response),
+      custom_embedding_strs=(query_bundle1.custom_embedding_strs or []) + split_expert_group_response(response),
     )
     context_nodes = self.retriever.retrieve(query_bundle2)
     if self.reranker:

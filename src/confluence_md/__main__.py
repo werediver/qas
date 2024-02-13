@@ -52,8 +52,9 @@ for i, (space_page_count, space) in enumerate(spaces_ext):
     html2md = make_html2md(str(base_url))
 
     for page in pages:
-      meta = {
-        "id": page.id,
+      meta: dict[str, object] = {
+        # Using "page_id" over just "id" for compatibility with `llama_hub.confluence.ConfluenceReader`.
+        "page_id": page.id,
         "title": page.title,
         "url": urljoin(str(base_url), page.links.tinyui),
         "space": space.key,

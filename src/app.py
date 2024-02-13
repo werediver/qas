@@ -14,6 +14,7 @@ from llama_index.vector_stores import ChromaVectorStore
 
 import chromadb
 
+from qas.expand_query_transform import ExpandQueryTransform
 from qas.ingestion.node_dedup import NodeDedup
 from qas.ingestion.text_clean_up import TextCleanUp
 from qas.messages_to_prompt import make_mistral_messages_to_prompt_converter
@@ -30,6 +31,8 @@ def main():
     embed_model=embed_model,
     transformations=[
       log_node_count("Initial node count: {count}"),
+      node_parser,
+      log_node_count("Node count after applying the node parser: {count}"),
       TextCleanUp(),
       log_node_count("Node count after removing tiny nodes: {count}"),
       NodeDedup(),
@@ -52,8 +55,8 @@ def main():
      documents = []
 
   vector_index = VectorStoreIndex.from_documents(
-    documents, 
-    service_context=service_ctx, 
+    documents,
+    service_context=service_ctx,
     storage_context=storage_ctx,
     show_progress=True,
   )
@@ -68,7 +71,7 @@ def main():
 
       # A Tree of Thought-like prompt.
       "Three experts with different mindsets who rarely agree with each other are reading the context and answering the following request by writing down one step of their independent thinking and sharing it with the group in turns, until they reach a conclusion.\n\n"
-      
+
       "{query}\n"
     ),
     augmented_query_template2=PromptTemplate(
@@ -98,7 +101,7 @@ def log_node_count(msg: str = "Node count: {count}") -> Callable[[List[BaseNode]
     del kwargs
     print(msg.format(count=len(nodes)))
     return nodes
-  
+
   return _log_node_count
 
 if __name__ == "__main__":
