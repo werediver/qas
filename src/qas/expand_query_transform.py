@@ -1,4 +1,4 @@
-from typing import Callable, List
+from typing import Callable
 from typing_extensions import override
 
 import re
@@ -16,7 +16,7 @@ EXPAND_QUERY_TEMPLATE = PromptTemplate(
 
 NUMBERED_LIST_ITEM_MARKER = re.compile(r"^\s*\d+\.", flags=re.MULTILINE)
 
-def split_num_list_response(response: str) -> List[str]:
+def split_num_list_response(response: str) -> list[str]:
   return [s for s in [s.strip() for s in NUMBERED_LIST_ITEM_MARKER.split(response)] if s]
 
 class ExpandQueryTransform(BaseQueryTransform):
@@ -27,7 +27,7 @@ class ExpandQueryTransform(BaseQueryTransform):
   - `query`, the query to expand
   """
 
-  _split_response: Callable[[str], List[str]]
+  _split_response: Callable[[str], list[str]]
 
   _llm: BaseLLM
 
@@ -35,7 +35,7 @@ class ExpandQueryTransform(BaseQueryTransform):
     self,
     llm: BaseLLM,
     prompt_template: PromptTemplate | None = None,
-    split_response: Callable[[str], List[str]] | None = None,
+    split_response: Callable[[str], list[str]] | None = None,
   ):
     self._prompt_template = prompt_template or EXPAND_QUERY_TEMPLATE
     self._split_response = split_response or split_num_list_response

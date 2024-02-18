@@ -1,12 +1,12 @@
-from typing import Any, List, Set
+from typing import Any
 
 from llama_index.schema import TransformComponent, BaseNode
 import llama_index.node_parser.text.sentence_window as sentence_window
 
 class NodeDedup(TransformComponent):
-  _keys: Set[Any] = set()
+  _keys: set[Any] = set()
 
-  def __call__(self, nodes: List["BaseNode"], **kwargs: Any) -> List["BaseNode"]:
+  def __call__(self, nodes: list["BaseNode"], **kwargs: Any) -> list["BaseNode"]:
       del kwargs
       return [node for node in nodes if self._register_node(node)]
 

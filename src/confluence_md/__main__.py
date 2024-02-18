@@ -1,5 +1,5 @@
 import os.path as p
-from typing import List, Tuple
+from typing import Tuple
 from urllib.parse import urljoin
 
 from atlassian.confluence import Confluence
@@ -27,7 +27,7 @@ client = Client(Confluence(
 
 spaces = client.get_all_spaces()
 
-spaces_ext: List[Tuple[int, Space]] = [(client.get_space_page_count(scope.key) or 0, scope) for scope in spaces]
+spaces_ext: list[Tuple[int, Space]] = [(client.get_space_page_count(scope.key) or 0, scope) for scope in spaces]
 spaces_ext.sort(key=lambda item: item[0], reverse=True) # Start with the largest spaces.
 
 expected_page_count = sum([page_count for page_count, _ in spaces_ext])

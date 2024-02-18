@@ -1,4 +1,4 @@
-from typing import Any, Generic, List, Literal, TypeVar
+from typing import Any, Generic, Literal, TypeVar
 from pydantic import BaseModel, Field, HttpUrl
 
 class Links(BaseModel):
@@ -30,14 +30,14 @@ class Space(BaseModel):
   expandable: dict = Field(alias="_expandable")
 
   metadata: Any | None = None
-  icon: List[Any] | None = None
+  icon: list[Any] | None = None
   description: dict | None = None
   """
   The possible keys are "plain", "view".
   """
 
-  retentionPolicy: List[Any] | None = None
-  homepage: List[Any] | None = None
+  retentionPolicy: list[Any] | None = None
+  homepage: list[Any] | None = None
   """
   Only the URL path.
   """
@@ -59,19 +59,19 @@ class Content(BaseModel):
   """
   Possible keys are "anonymous_export_view", "export_view" (HTML), "styled_view" (HTML with CSS), "view" (HTML), "editor".
   """
-  ancestors: List["Content"] | None = None
+  ancestors: list["Content"] | None = None
   """
   Ancestor pages ordered root-to-leaf, starting with the space front-page.
   """
   children: dict[str, "Content"] | None = None
   descendants: dict[str, "Content"] | None = None
   metadata: dict | None = None
-  version: List[Any] | None = None
+  version: list[Any] | None = None
 
 _T = TypeVar("_T")
 
 class Response(BaseModel, Generic[_T]):
-  results: List[_T]
+  results: list[_T]
   start: int
   limit: int
   size: int

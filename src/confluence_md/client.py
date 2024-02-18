@@ -51,7 +51,7 @@ class Client:
     batch_size: int = 500,
     limit: int | None = None,
     expand: str | None = None
-  ) -> List[Space]:
+  ) -> list[Space]:
 
     @_default_retry
     def fetch(start: int, retry_info: RetryInfo) -> Response[Space]:
@@ -94,7 +94,7 @@ class Client:
     batch_size: int = 50,
     limit: int | None = None,
     expand: str | None = None,
-  ) -> List[Content]:
+  ) -> list[Content]:
 
     @_default_retry
     def fetch(start: int, retry_info: RetryInfo) -> Response[Content] | _Skip:
@@ -128,8 +128,8 @@ class Client:
     self,
     fetch: Callable[[int], Response[_T] | _Skip],
     limit: int | None
-  ) -> List[_T]:
-    items: List[_T] = []
+  ) -> list[_T]:
+    items: list[_T] = []
     skip_count = 0
     while limit is None or len(items) < limit:
       try:

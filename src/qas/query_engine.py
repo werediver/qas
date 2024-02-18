@@ -1,4 +1,3 @@
-from typing import List
 from typing_extensions import override
 import os
 
@@ -53,7 +52,7 @@ class QueryEngine(CustomQueryEngine):
   reranker: BaseNodePostprocessor | None
   llm: BaseLLM
 
-  messages: List[ChatMessage] = []
+  messages: list[ChatMessage] = []
 
   @override
   def custom_query(self, query: str) -> STR_OR_RESPONSE_TYPE:
@@ -82,7 +81,7 @@ class QueryEngine(CustomQueryEngine):
     if self.reranker:
       context_nodes = self.reranker.postprocess_nodes(nodes=context_nodes, query_bundle=query_bundle2)
     context = self._format_context_nodes(context_nodes)
-        
+
     augmented_query = self.augmented_query_template2.format(context=context, response=response, query=query)
 
     prompt = self.messages_to_prompt(
@@ -94,7 +93,7 @@ class QueryEngine(CustomQueryEngine):
 
     return response
 
-  def _format_context_nodes(self, nodes: List[NodeWithScore]) -> str:
+  def _format_context_nodes(self, nodes: list[NodeWithScore]) -> str:
     # Put the most relevant entries in the end (of the prompt), where they may have more impact on the generation.
     return "\n\n".join([self._format_context_node(node_with_score.node) for node_with_score in reversed(nodes)])
 
@@ -119,5 +118,5 @@ import re
 
 EXPERT_MARKER = re.compile(r"^.*?Expert[^:]*:[\s_*]*|\n\n", flags=re.MULTILINE | re.IGNORECASE)
 
-def split_expert_group_response(response: str) -> List[str]:
+def split_expert_group_response(response: str) -> list[str]:
   return [s for s in [s.strip() for s in EXPERT_MARKER.split(response)] if s]

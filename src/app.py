@@ -1,5 +1,5 @@
 import sys
-from typing import Any, Callable, List
+from typing import Any, Callable
 
 from llama_index.embeddings import FastEmbedEmbedding
 from llama_index.indices import VectorStoreIndex
@@ -96,8 +96,8 @@ def main():
     print(f"🟢 Response: {response}")
     print("🔴 Query: ", end="", flush=True)
 
-def log_node_count(msg: str = "Node count: {count}") -> Callable[[List[BaseNode]], List[BaseNode]]:
-  def _log_node_count(nodes: List[BaseNode], **kwargs: Any) -> List[BaseNode]:
+def log_node_count(msg: str = "Node count: {count}") -> Callable[[list[BaseNode]], list[BaseNode]]:
+  def _log_node_count(nodes: list[BaseNode], **kwargs: Any) -> list[BaseNode]:
     del kwargs
     print(msg.format(count=len(nodes)))
     return nodes

@@ -1,6 +1,6 @@
 from random import random
 from time import sleep
-from typing import Callable, List
+from typing import Callable
 
 from llama_hub.confluence import ConfluenceReader
 from llama_index.schema import Document
@@ -9,17 +9,17 @@ from requests import HTTPError
 from qas.utils import Mark
 
 def load_data(
-  url: str, 
-  cloud: bool, 
-  space_keys: List[str],
-  cql_queries: List[str],
+  url: str,
+  cloud: bool,
+  space_keys: list[str],
+  cql_queries: list[str],
   patch_reader: Callable[[ConfluenceReader], None],
-) -> List[Document]:
+) -> list[Document]:
   """
   See `CONFLUENCE_API_TOKEN`, `CONFLUENCE_USERNAME`, `CONFLUENCE_PASSWORD`
   in `llama_hub.confluence` for authorization options.
 
-  If that's not enough, use `patch_reader` to inject your own `Confluence` 
+  If that's not enough, use `patch_reader` to inject your own `Confluence`
   (from `atlassian`) client instance.
   """
 

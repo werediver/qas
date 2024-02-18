@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any
 import re
 
 from llama_index.schema import TransformComponent, BaseNode, TextNode
@@ -14,7 +14,7 @@ class TextCleanUp(TransformComponent):
   _trailing_whitespace = re.compile(r"\s+$")
   _word = re.compile(r"\w+")
 
-  def __call__(self, nodes: List[BaseNode], **kwargs: Any) -> List[BaseNode]:
+  def __call__(self, nodes: list[BaseNode], **kwargs: Any) -> list[BaseNode]:
       del kwargs
       return [self.check_node(node) for node in nodes if self.is_not_tiny(node)]
 
